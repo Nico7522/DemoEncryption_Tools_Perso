@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoEncryption", "DemoEncryption\DemoEncryption.csproj", "{23EE10BB-E2F3-4861-AE40-AE6DB71AFBA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.Cryptography", "Tools.Cryptography\Tools.Cryptography.csproj", "{7C5789FC-31EE-430D-B247-C0FE359514E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23EE10BB-E2F3-4861-AE40-AE6DB71AFBA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23EE10BB-E2F3-4861-AE40-AE6DB71AFBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23EE10BB-E2F3-4861-AE40-AE6DB71AFBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23EE10BB-E2F3-4861-AE40-AE6DB71AFBA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5789FC-31EE-430D-B247-C0FE359514E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5789FC-31EE-430D-B247-C0FE359514E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5789FC-31EE-430D-B247-C0FE359514E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5789FC-31EE-430D-B247-C0FE359514E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54DC3A93-A866-4F6F-B9A7-1A223EB07DEE}
+	EndGlobalSection
+EndGlobal
