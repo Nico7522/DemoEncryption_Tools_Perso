@@ -1,5 +1,6 @@
 ﻿using DemoEncryption.Models;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Tools.Cryptography;
@@ -14,6 +15,9 @@ namespace DemoEncryption
             //RSA rsa = RSA.Create(2048);
             //string privateKey = rsa.ExportRSAPrivateKeyPem();
             //Console.WriteLine(privateKey);
+            //File.WriteAllBytes("keys.bin", Encoding.Default.GetBytes(privateKey));
+            //File.WriteAllBytes("passwd.bin", Encrypt(privateKey, "Test1234="));
+
 
             //string publicKey = rsa.ExportRSAPublicKeyPem();
             //Console.WriteLine(publicKey);
@@ -38,21 +42,21 @@ namespace DemoEncryption
 
             // Récupération d'une clée
             string? publicKey = null;
-            using(HttpClient _client = new HttpClient())
+            using (HttpClient _client = new HttpClient())
             {
                 _client.BaseAddress = new Uri("https://localhost:7273/api/");
-                using (HttpResponseMessage response = _client.GetAsync("Security/Security").Result) 
+                using (HttpResponseMessage response = _client.GetAsync("Security/Security").Result)
                 {
                     try
                     {
-                        response.EnsureSuccessStatusCode();   
+                        response.EnsureSuccessStatusCode();
                         string json = response.Content.ReadAsStringAsync().Result;
-                        PublicKeyInfo key = JsonSerializer.Deserialize<PublicKeyInfo>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+                        PublicKeyInfo key = JsonSerializer.Deserialize<PublicKeyInfo>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                         if (key is null)
                             throw new Exception();
-                       
-                      publicKey = Encoding.Default.GetString(key.PublicKey);
+                        Console.WriteLine(publicKey);
+                        publicKey = Encoding.Default.GetString(key.PublicKey);
                     }
                     catch (Exception)
                     {
@@ -63,7 +67,7 @@ namespace DemoEncryption
             }
 
 
-            // Register
+            //Register
             //using (HttpClient _client = new HttpClient())
             //{
             //    _client.BaseAddress = new Uri("https://localhost:7273/api/");
@@ -73,29 +77,39 @@ namespace DemoEncryption
             //    using (HttpResponseMessage response = _client.PostAsync("Auth/Register", httpContent).Result)
             //    {
             //        response.EnsureSuccessStatusCode();
+            //        Console.WriteLine(response.Content);
+
             //    }
             //}
 
-            using (HttpClient _client = new HttpClient())
-            {
-                _client.BaseAddress = new Uri("https://localhost:7273/api/");
-                ICryptoRSA rsa = new CryptoRSA(publicKey);
-                string passwd = "Test12345=";
-                HttpContent httpContent = JsonContent.Create(new { Email = "nn.d@gmail.com", Passwd = rsa.Encrypt(passwd) });
-                using (HttpResponseMessage response = _client.PostAsync("Auth/Login", httpContent).Result)
-                {
-                    try
-                    {
-                    response.EnsureSuccessStatusCode();
-                        Console.WriteLine(response.Content);
-                    }
-                    catch (HttpRequestException ex)
-                    {
+            //using (HttpClient _client = new HttpClient())
+            //{
+            //    _client.BaseAddress = new Uri("https://localhost:7273/api/");
+            //    ICryptoRSA rsa = new CryptoRSA(publicKey);
+            //    string passwd = "Test12345=";
+            //    HttpContent httpContent = JsonContent.Create(new { Email = "nn.d@gmail.com", Passwd = rsa.Encrypt(passwd) });
+            //    using (HttpResponseMessage response = _client.PostAsync("Auth/Login", httpContent).Result)
+            //    {
+            //        try
+            //        {
+            //            response.EnsureSuccessStatusCode();
+            //            string json = response.Content.ReadAsStringAsync().Result;
+            //            if(string.IsNullOrEmpty(json))
+            //                throw new Exception("Error");
+            //            object utilisateur = JsonSerializer.Deserialize<object>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
+            //        }
+            //        catch (HttpRequestException ex)
+            //        {
+
+            //            Console.WriteLine(ex.Message);
+            //        }
+            //        catch(Exception ex)
+            //        {
+            //            Console.WriteLine(ex.Message);
+            //        }
+            //    }
+            //}
 
         }
 
