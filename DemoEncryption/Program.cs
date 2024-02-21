@@ -1,9 +1,11 @@
 ﻿using DemoEncryption.Models;
+using System;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Tools.Cryptography;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DemoEncryption
 {
@@ -12,11 +14,12 @@ namespace DemoEncryption
         static void Main(string[] args)
         {
             ////Generate a public/private key pair.  
-            //RSA rsa = RSA.Create(2048);
-            //string privateKey = rsa.ExportRSAPrivateKeyPem();
-            //Console.WriteLine(privateKey);
-            //File.WriteAllBytes("keys.bin", Encoding.Default.GetBytes(privateKey));
-            //File.WriteAllBytes("passwd.bin", Encrypt(privateKey, "Test1234="));
+            RSA rsa = RSA.Create(2048);
+            string privateKey = rsa.ExportRSAPrivateKeyPem();
+            Console.WriteLine(privateKey);
+
+            File.WriteAllBytes("key.bin", Encoding.Default.GetBytes(privateKey));
+            File.WriteAllBytes("connectionString.bin", Encrypt(privateKey, "Data Source=DESKTOP-IFNFMI9;Initial Catalog=EF_LABO_SHOES;Integrated Security=True;Connect Timeout=60;"));
 
 
             //string publicKey = rsa.ExportRSAPublicKeyPem();
@@ -41,30 +44,30 @@ namespace DemoEncryption
 
 
             // Récupération d'une clée
-            string? publicKey = null;
-            using (HttpClient _client = new HttpClient())
-            {
-                _client.BaseAddress = new Uri("https://localhost:7273/api/");
-                using (HttpResponseMessage response = _client.GetAsync("Security/Security").Result)
-                {
-                    try
-                    {
-                        response.EnsureSuccessStatusCode();
-                        string json = response.Content.ReadAsStringAsync().Result;
-                        PublicKeyInfo key = JsonSerializer.Deserialize<PublicKeyInfo>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            //string? publicKey = null;
+            //using (HttpClient _client = new HttpClient())
+            //{
+            //    _client.BaseAddress = new Uri("https://localhost:7273/api/");
+            //    using (HttpResponseMessage response = _client.GetAsync("Security/Security").Result)
+            //    {
+            //        try
+            //        {
+            //            response.EnsureSuccessStatusCode();
+            //            string json = response.Content.ReadAsStringAsync().Result;
+            //            PublicKeyInfo key = JsonSerializer.Deserialize<PublicKeyInfo>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                        if (key is null)
-                            throw new Exception();
-                        Console.WriteLine(publicKey);
-                        publicKey = Encoding.Default.GetString(key.PublicKey);
-                    }
-                    catch (Exception)
-                    {
+            //            if (key is null)
+            //                throw new Exception();
+            //            Console.WriteLine(publicKey);
+            //            publicKey = Encoding.Default.GetString(key.PublicKey);
+            //        }
+            //        catch (Exception)
+            //        {
 
-                        throw;
-                    }
-                }
-            }
+            //            throw;
+            //        }
+            //    }
+            //}
 
 
             //Register
@@ -110,6 +113,13 @@ namespace DemoEncryption
             //        }
             //    }
             //}
+
+            //ICryptoRSA cryptoRSA = new CryptoRSA(Tools.Cryptography.KeySizes.S2048);
+            //byte[] cypher = Encrypt(cryptoRSA.PublicKey, "Hello");
+            //File.WriteAllBytes("connectionString.bin", Encoding.Default.GetBytes("Data Source=DESKTOP-IFNFMI9;Initial Catalog=EF_LABO_SHOES;Integrated Security=True;Connect Timeout=60;"));
+            ////Console.WriteLine(Decrypt(cryptoRSA.PrivateKey, cypher));
+
+
 
         }
 
